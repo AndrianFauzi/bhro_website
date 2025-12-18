@@ -56,6 +56,37 @@
     </section>
 
   </div>
+
+  <!-- Popup Section -->
+    <div id="popup" class="popup-overlay">
+    <div class="popup-box">
+        <h2>Halo Bhro!</h2>
+        <p>Kami sedang meningkatkan sistem agar layanan Bhro.io makin optimal.</p>
+        <img src="assets/maintenance_Icon.svg" alt="Maintenance" class="popup-image" />
+        <p class="popup-note">Tenang, Bhro tetap bisa dilayani di sini.</p>
+        <button class="popup-button" id="startNow">Chat sekarang!</button>
+        <div class="popup-footer">Bhro.</div>
+    </div>
+    </div>
+
+
+   <script>
+    // Tampilkan popup sekali per sesi
+    window.addEventListener('load', function() {
+        if (!sessionStorage.getItem('bhroPopupShown')) {
+        document.getElementById('popup').style.display = 'flex';
+        sessionStorage.setItem('bhroPopupShown', 'true');
+        }
+    });
+
+    // Tombol chat ke WhatsApp
+    document.getElementById('startNow').addEventListener('click', function() {
+        window.open('https://wa.me/6287864548006', '_blank'); // buka WhatsApp di tab baru
+        document.getElementById('popup').style.display = 'none';
+    });
+    </script>
+
+
 </body>
 </html>
 
