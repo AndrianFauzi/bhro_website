@@ -55,22 +55,61 @@
       </div>
     </section>
 
+    <!-- Product Selector -->
+    <section class="product-selector">
+      <div class="selector-tabs">
+        <button class="tab active" data-category="lama">Lebih Lama</button>
+        <button class="tab" data-category="keras">Lebih Keras</button>
+        <button class="tab" data-category="hasrat">Lebih Berhasrat</button>
+        <button class="tab" data-category="optimalisasi_kesuburan_pria">Optimalisasi Kesuburan Pria</button>
+        <button class="tab" data-category="pemeriksaan_ims">Pemeriksaan Ims</button>
+        <button class="tab" data-category="pencegah_ims">Pencegah Ims</button>
+      </div>
+    
+      <div class="product-cards" id="productCards"></div>
+    </section>
+
+    
+    
+    
   </div>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-social">
+        <p><strong>Youtube:</strong> <a href="https://www.youtube.com/@Bhro_Healthcare"
+            target="_blank">@Bhro_Healthcare</a></p>
+        <p><strong>Tiktok:</strong> @bhrohealtcare</p>
+        <p><strong>Instagram:</strong> @bhro.io</p>
+        <p><strong>Shopee:</strong> bhro_healthcare <span>(Review dari customer dapat dilihat di sini)</span></p>
+        <p><strong>Tokopedia:</strong> Bhro Healthcare</p>
+      </div>
+  
+      <div class="footer-company">
+        <p><strong>PT Bhro Healthcare Indonesia</strong></p>
+        <p>Plaza Aminta Lantai 5/504<br>TB Simatupang – Jakarta Selatan</p>
+      </div>
+    </div>
+  </footer>
 
   <!-- Popup Section -->
     <div id="popup" class="popup-overlay">
-    <div class="popup-box">
+      <div class="popup-box">
+        <!-- Close button -->
+        <button class="popup-close" id="closePopup">&times;</button>
+    
         <h2>Halo Bhro!</h2>
         <p>Kami sedang meningkatkan sistem agar layanan Bhro.io makin optimal.</p>
         <img src="assets/maintenance_Icon.svg" alt="Maintenance" class="popup-image" />
         <p class="popup-note">Tenang, Bhro tetap bisa dilayani di sini.</p>
-        <button class="popup-button" id="startNow">Chat sekarang!</button>
+    
+        <button class="popup-button" id="enterNow">Masuk sekarang</button>
         <div class="popup-footer">Bhro.</div>
-    </div>
+      </div>
     </div>
 
 
-   <script>
+
+   <!-- <script>
     // Tampilkan popup sekali per sesi
     window.addEventListener('load', function() {
         if (!sessionStorage.getItem('bhroPopupShown')) {
@@ -84,7 +123,112 @@
         window.open('https://wa.me/6287864548006', '_blank'); // buka WhatsApp di tab baru
         document.getElementById('popup').style.display = 'none';
     });
+    </script> -->
+
+    <script>
+      window.addEventListener('load', function () {
+        if (!sessionStorage.getItem('bhroPopupShown')) {
+          document.getElementById('popup').style.display = 'flex';
+          sessionStorage.setItem('bhroPopupShown', 'true');
+        }
+      });
+
+      function closePopup() {
+        document.getElementById('popup').style.display = 'none';
+      }
+
+      document.getElementById('closePopup').addEventListener('click', closePopup);
+      document.getElementById('enterNow').addEventListener('click', closePopup);
     </script>
+
+
+    <script src="data/lama.js"></script>
+    <script src="data/keras.js"></script>
+    <script src="data/hasrat.js"></script>
+    <script src="data/pemeriksaan_ims.js"></script>
+    <script src="data/pencegah_ims.js"></script>
+    <script src="data/optimalisasi_kesuburan_pria.js"></script>
+
+    <script>
+      const phone = '6287864548006';
+
+      const products = {
+        lama: window.PRODUCT_LAMA,
+        keras: window.PRODUCT_KERAS,
+        hasrat: window.PRODUCT_HASRAT,
+        pemeriksaan_ims: window.PRODUCT_PEMERIKSAAN_IMS || [],
+        pencegah_ims: window.PRODUCT_PENCEGAH_IMS || [],
+        optimalisasi_kesuburan_pria: window.OPTIMALISASI_KESUBURAN_PRIA || []
+      };
+
+      const productContainer = document.getElementById('productCards');
+      const tabs = document.querySelectorAll('.tab');
+
+      function renderProducts(category) {
+        productContainer.innerHTML = '';
+
+        if (!products[category] || products[category].length === 0) {
+          productContainer.innerHTML = '<p style="text-align:center">Produk segera tersedia</p>';
+          return;
+        }
+
+        const formatRupiah = (value) => {
+          if (typeof value !== 'number') return value;
+          return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+          }).format(value);
+        };
+
+        products[category].forEach(product => {
+          const card = document.createElement('div');
+          card.className = 'product-card show';
+
+          card.innerHTML = `
+            <h3>${product.name}</h3>
+            <p>${formatRupiah(product.price)}</p>
+            <button onclick="buyNow('${product.name}')">
+              Beli sekarang
+            </button>
+          `;
+          // card.innerHTML = `
+          //   <img src="${product.image}" alt="${product.name}">
+          //   <h3>${product.name}</h3>
+          //   <p>${product.price}</p>
+          //   <button onclick="buyNow('${product.message}')">
+          //     Beli sekarang
+          //   </button>
+          // `;
+
+          productContainer.appendChild(card);
+        });
+      }
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          renderProducts(tab.dataset.category);
+        });
+      });
+
+      // function buyNow(message) {
+      //   const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+      //   window.open(url, '_blank');
+      // }
+      function buyNow(productName) {
+        const message = `Halo BHRO! \nSaya ingin membeli produk\n${productName}\nBantu proses ya!`;
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        window.open(url, '_blank');
+      }
+
+
+      renderProducts('lama');
+    </script>
+
+
+
 
 
 </body>
