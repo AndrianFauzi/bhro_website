@@ -415,15 +415,34 @@ body {
 }
 
 
-/* Floating WhatsApp Button */
-.whatsapp-float {
+/* Wrapper */
+.whatsapp-wrapper {
   position: fixed;
   bottom: 20px;
   right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
 
+/* Floating message */
+.whatsapp-message {
+  background: #ffffff;
+  color: #001f5b;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+}
+
+/* WhatsApp button (tetap sama) */
+.whatsapp-float {
   width: 56px;
   height: 56px;
-
   background-color: #25d366;
   border-radius: 50%;
 
@@ -432,8 +451,6 @@ body {
   justify-content: center;
 
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  z-index: 9999;
-
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -449,9 +466,17 @@ body {
 
 /* Mobile adjust */
 @media (max-width: 768px) {
-  .whatsapp-float {
+  .whatsapp-wrapper {
     bottom: 16px;
     right: 16px;
+  }
+
+  .whatsapp-message {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+  }
+
+  .whatsapp-float {
     width: 52px;
     height: 52px;
   }
